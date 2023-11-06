@@ -4,11 +4,8 @@ Takes a directory of URLs and looks for URLs that start with the starting slug
 """
 
 import pandas as pd
-import numpy as np
 import os
 import requests
-import json
-import urllib.request
 from bs4 import BeautifulSoup
 import csv
 
@@ -61,19 +58,19 @@ def scrape(url:str, filename:str):
   answer2: (answer2, upvote_count)}
   '''
   print('scraping ' + str(url))
-  return_dict = {}
 
-  apikey = '4916e294a8357d561fab297cbd2089552578b2bc'
-  params = {
-    'url': url,
-    'apikey': apikey,
-    'js_render': 'true',
-    'antibot': 'true',
-    'premium_proxy': 'true',
-}
-  response = requests.get('https://api.zenrows.com/v1/', params=params)
+  apikey = 'd02ca450-7b42-4789-8528-ecf96ea1a150'
+  response = requests.get(
+  url='https://proxy.scrapeops.io/v1/',
+  params={
+      'api_key':apikey,
+      'url':url, 
+      'render_js': 'true', 
+      'residential': 'true', 
+  },
+)
 
-  soup = BeautifulSoup(response.text, 'html.parser')
+  soup = BeautifulSoup(response.content, 'html.parser')
   data = soup.find_all('div', {"js-post__content-text restore h-wordwrap"})
 
   with open(filename, 'a', newline='') as csv_file:
@@ -115,10 +112,13 @@ def save_to_csv(data, filename):
 
 #__Main__
 
-directory = 'Justia_rawURLs'
-url = "https://forum.legaljunkies.com/forum/real-estate-and-property-law/buying-and-selling-property/mortgages-refinancing-foreclosure/658349-what-is-the-proof-of-income-for-a-mortgage-loan"
+directory = 'RawScrapedURLs_MFF_LegalJunkies'
+sub_url = "https://forum.legaljunkies.com/forum/real-estate-and-property-law/buying-and-selling-property/mortgages-refinancing-foreclosure/"
 
-scrape(url, 'legaljunkies_test.csv')
+url_list = directory_to_cleaned_list(directory, sub_url)
+
+for url in url_list:
+  scrape(url, 'legaljunkies_mortgageForclosure.csv')
 
 
 
