@@ -112,13 +112,13 @@ def save_to_csv(data, filename):
 
 #__Main__
 
-directory = 'RawScrapedURLs_MFF_LegalJunkies'
-sub_url = "https://forum.legaljunkies.com/forum/real-estate-and-property-law/buying-and-selling-property/mortgages-refinancing-foreclosure/"
+directory = 'legaljunkies_construction_Q&A'
+sub_url = "https://forum.legaljunkies.com/forum/real-estate-and-property-law/buying-and-selling-property/construction-and-renovation/"
 
 url_list = directory_to_cleaned_list(directory, sub_url)
 
 for url in url_list:
-  scrape(url, 'legaljunkies_mortgageForclosure.csv')
+  scrape(url, 'legaljunkies_construction.csv')
 
 
 
